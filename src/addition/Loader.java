@@ -1,8 +1,7 @@
+package addition;
+
 import java.util.Random;
 
-import javafx.application.Application;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,47 +11,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-
-public class App extends Application {
-
-	@Override 
-
-	public void start(Stage primaryStage) {
-		GridPane gridpane = new GridPane();
-        gridpane.setAlignment(Pos.CENTER);
-    
-        Label question = new Label("");
-        Label answer = new Label();
-        TextField result = new TextField();
-
-        Loader loader = new Loader(result, answer, question, gridpane);
-
-        loader.loadText(gridpane);
-        loader.submitBtn(gridpane);
-        loader.renewBtn(gridpane);
-        loader.exitBtn(gridpane, primaryStage);
-   
-        Scene scene = new Scene(gridpane, 600, 450);
-
-        primaryStage.setTitle("Addition");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-  
-	}
-
-    public static void main(String[] args){
-		launch(args);
-	}
-
-}
-
-
-
 class Loader {
 
     private Label question;
     private Label answer;
     private TextField result;
+    GridPane gridpane = new GridPane();
 
     int sum1;
     int sum2;
@@ -68,11 +32,14 @@ class Loader {
         this.result = result;
     }
 
+    
 
     public int loadQuestion(GridPane gp, int number1, int number2) {
         question.setText(number1 + " + " + number2);
         return number1 + number2;
     }
+
+
 
     public int loadAnswer(GridPane gp, TextField result, Label answer) {
         int res = Integer.parseInt(result.getText());
@@ -80,7 +47,10 @@ class Loader {
         return res;     
     }
 
+
+
     public void loadText(GridPane gp) {
+
         Text txt1 = new Text("Question: ");
         Text txt2 = new Text("Answer: ");
 
@@ -95,6 +65,14 @@ class Loader {
         number2 = rand.nextInt(10);
 
         question.setText(number1 + " + " + number2);
+   
+        AnswerTextPrompt prompt = new AnswerTextPrompt(
+            gp.getScene().getWindow()
+        );
+
+        String res = prompt.getResult();
+
+        result.setText(res);
     }
 
 
@@ -123,10 +101,14 @@ class Loader {
                 alert.showAndWait();
             }
         });
+
         gp.add(btn, 0, 3);
     }
 
+
+
     public void renewBtn(GridPane gp) {
+
         Button btn1 = new Button("Continue");
         
         btn1.setOnAction(e -> {
@@ -145,10 +127,13 @@ class Loader {
 
 
     public void exitBtn(GridPane gp, Stage stage) {
+
         Button btnExit = new Button("Exit");
+
         btnExit.setOnAction(e -> {
             stage.close();
         });
+
         gp.add(btnExit, 2, 3);
     }
 	
